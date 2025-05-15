@@ -2,16 +2,23 @@
 #include "Prerequisites.h"
 
 class
-  CaesarEncryption {
+CaesarEncryption {
 public:
   CaesarEncryption() = default;
   ~CaesarEncryption() = default;
 
-  std::string
-  Encryption(const std::string& texto, int desplazamiento) {
-    return "";
+  string
+  EncryptionCaesar(const string& texto, int desplazamiento) {
+    for (int i = 0; i < texto.size(); i++) {
+      char posActual = texto[i];
+      char posNueva = (posActual + desplazamiento) % alfabeto.size();
+
+      respuesta += posNueva;
+    }
+    return respuesta;
   }
 
 private:
-
+  string alfabeto = "abcdefghijklmnopqrstuvwxyz";
+  string respuesta = "";
 };
