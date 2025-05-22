@@ -1,11 +1,12 @@
 #include "CaesarEncryption.h"
+#include "XOREncoder.h"
 
-int 
+int
 main() {
   string texto;
   int desplazo;
 
-  cout << "Escribe el mensaje a encriptar: " << endl;;
+  /*cout << "Escribe el mensaje a encriptar: " << endl;;
   getline(cin, texto);
 
   cout << "Escribe el valor de desplazamiento: " << endl;;
@@ -16,7 +17,9 @@ main() {
   cout << "El mensaje cifrado es: " << mensjaeCifrado << endl;
 
   string descifrado = cifrado.DecodeCaesar(mensjaeCifrado, desplazo);
-  cout << "El mensaje descifrado es: " << descifrado << endl;
+  cout << "El mensaje descifrado es: " << descifrado << endl*/;
+
+
 
   return 0;
 }
