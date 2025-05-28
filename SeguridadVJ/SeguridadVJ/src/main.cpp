@@ -1,9 +1,10 @@
 #include "CaesarEncryption.h"
 #include "XOREncoder.h"
+#include "AsciiBinary.h"
 
 int
 main() {
-  string mensaje = "Sans e e e e e";
+  /*string mensaje = "Sans e e e e e";
   string clave = "clave";
 
   XOREncoder XORencoder;
@@ -32,7 +33,15 @@ main() {
   XORencoder.bruteForce_2Byte(bytesCifrados);
 
   cout << "\n--- Fuerza bruta (diccionario de claves) ---\n";
-  XORencoder.bruteForceByDictionary(bytesCifrados);
+  XORencoder.bruteForceByDictionary(bytesCifrados);*/
+  AsciiBinary AB;
+
+  string input = "Una vida para pintar";
+  string binary = AB.stringToBinary(input);
+  cout << "Texto a binario: " << binary << endl;
+
+  string message = AB.binaryToString(binary);
+  cout << "Binario a texto: " << message << endl;
 
   return 0;
 }
