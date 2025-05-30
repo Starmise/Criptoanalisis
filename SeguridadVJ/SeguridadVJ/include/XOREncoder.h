@@ -94,8 +94,9 @@ public:
     }
   }
 
-  void bruteForceByDictionary(const std::vector<unsigned char>& cifrado) {
-    std::vector<std::string> clavesComunes = {
+  void 
+  bruteForceByDictionary(const vector<unsigned char>& cifrado) {
+    vector<string> clavesComunes = {
       "clave", "admin", "1234", "root", "test", "abc", "hola", "user",
       "pass", "12345", "0000", "password", "default", "Koromaru", "Sans e e e e e"
     };
@@ -111,6 +112,46 @@ public:
         cout << "Clave de diccionario: " << clave << "\n";
         cout << "Texto posible: " << result << "\n";
       }
+    }
+  }
+
+  void
+  bruteForceByFile(const vector<unsigned char>& cifrado, const string& mensajeOG) {
+    vector<string> fileNames = {
+        "bin/adobe100.txt",
+        "bin/bible.txt",
+        "bin/elitehacker.txt",
+        "bin/fortinet-2021_passwords.txt",
+        "bin/Lizard-Squad.txt"
+    };
+
+    for (size_t i = 0; i < fileNames.size(); i++) {
+      ifstream file(fileNames[i]);
+      if (!file.is_open()) {
+        cerr << "No se pudo abrir el archivo: " << fileNames[i] << endl;
+        continue;
+      }
+
+      string clave;
+      while (getline(file, clave)) {
+        if (clave.empty()) {
+          continue;
+        }
+
+        string result;
+        for (int j = 0; j < cifrado.size(); j++) {
+          result += static_cast<unsigned char>(cifrado[j] ^ clave[j % clave.size()]);
+        }
+
+        if (isValidText(result) && result == mensajeOG) {
+          cout << "============================\n";
+          cout << "Archivo: " << fileNames[i] << endl;
+          cout << "Clave: " << clave << endl;
+          cout << "Texto posible: " << result << endl;
+          return;
+        }
+      }
+      file.close();
     }
   }
 

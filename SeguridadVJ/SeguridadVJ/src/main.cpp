@@ -4,8 +4,8 @@
 
 int
 main() {
-  /*string mensaje = "Sans e e e e e";
-  string clave = "clave";
+  string mensaje = "Sans e e e e e";
+  string clave = "jackinthebox69";
 
   XOREncoder XORencoder;
 
@@ -13,35 +13,19 @@ main() {
 
   cout << endl;
   string cifrado = XORencoder.encode(mensaje, clave);
-  cout << "Mensaje cifrado: " << cifrado << endl;
-  cout << endl;
-
-  cout << "Texto cifrado (hex): ";
-  XORencoder.printHex(cifrado);
-  cout << endl;
-  cout << endl << "\n";
-
-  string descifrado = XORencoder.encode(cifrado, clave);
-  cout << "Mensaje descifrado: " << descifrado << std::endl;
-
   vector<unsigned char> bytesCifrados(cifrado.begin(), cifrado.end());
 
-  cout << "\n--- Fuerza bruta (1 byte) con filtro ---\n";
-  XORencoder.bruteForce_1Byte(bytesCifrados);
+  XORencoder.bruteForceByFile(bytesCifrados, mensaje);
 
-  cout << "\n--- Fuerza bruta (2 byte) con filtro ---\n";
-  XORencoder.bruteForce_2Byte(bytesCifrados);
 
-  cout << "\n--- Fuerza bruta (diccionario de claves) ---\n";
-  XORencoder.bruteForceByDictionary(bytesCifrados);*/
-  AsciiBinary AB;
+  /*AsciiBinary AB;
 
   string input = "Una vida para pintar";
   string binary = AB.stringToBinary(input);
   cout << "Texto a binario: " << binary << endl;
 
   string message = AB.binaryToString(binary);
-  cout << "Binario a texto: " << message << endl;
+  cout << "Binario a texto: " << message << endl;*/
 
   return 0;
 }

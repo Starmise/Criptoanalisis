@@ -8,4 +8,6 @@
 #include <cctype>
 #include <algorithm>
 
+#include <fstream> //Para leer los txt
+
 using namespace std;
