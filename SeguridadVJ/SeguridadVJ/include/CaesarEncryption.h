@@ -2,11 +2,20 @@
 #include "Prerequisites.h"
 
 class
-  CaesarEncryption {
+CaesarEncryption {
 public:
+  /**
+  * @brief Constructor y Destructor por defecto
+  */
   CaesarEncryption() = default;
   ~CaesarEncryption() = default;
 
+  /**
+   * @brief Cifra un texto usando el cifrado César con un valor de desplazamiento dado.
+   * @param texto Texto original que se debe cifrar.
+   * @param desplazamiento Número de posiciones a desplazar cada letra.
+   * @return Texto cifrado.
+   */
   string
   EncryptionCaesar(const string& texto, int desplazamiento) {
     std::string result = "";
@@ -28,11 +37,21 @@ public:
     return result;
   }
 
+  /**
+   * @brief Descifra un texto cifrado con el cifrado César usando un desplazamiento dado.
+   * @param texto Texto cifrado que se desea descifrar.
+   * @param desplazamiento Desplazamiento usado originalmente para cifrar.
+   * @return Texto descifrado.
+   */
   string
   DecodeCaesar(const string& texto, int desplazamiento) {
     return EncryptionCaesar(texto, 26 - (desplazamiento % 26));
   }
 
+  /**
+   * @brief Ataque por fuerza bruta probando todas las posibles claves para descifrar un texto.
+   * @param texto Texto cifrado sobre el cual se va a aplicar fuerza bruta.
+   */
   void
   bruteForce(const string& texto) {
     for (int i = 0; i < 26; i++) {
@@ -41,11 +60,16 @@ public:
     }
   }
 
-
+  /**
+   * @brief Calcula una posible clave analizando las frecuencias de letras en el texto.
+   * @param texto Texto cifrado donde la clave es desconocida.
+   * @return Clave Probable valor de desplazamiento usado para cifrar el texto.
+   */
   int
   evaluatePossibleKey(const std::string& texto) {
-    int frecuencias[26] = { 0 };
+    int frecuencias[26] = { 0 }; // Arreglo de frecuencias para contar cuántas veces aparece cada letra
 
+    // Se recorre todo el texto y aumenta la frecuencia sin importar si es mayúscula o minúscula
     for (char c : texto) {
       if (c >= 'A' && c <= 'Z') {
         frecuencias[c - 'A']++;
@@ -54,9 +78,11 @@ public:
       
       frecuencias[c - 'a']++;
       }
+      // No se aumenta la frecuencia si no es una letra
     }
 
-    int indexMax = 0;
+    int indexMax = 0; // Indice de la letra con mayor frecuencia
+    // Se busca la letra más común en el arreglo de frecuencia
     for (int i = 0; i < 26; i++) {
       if (frecuencias[i] > frecuencias[0]) {
         indexMax = i;

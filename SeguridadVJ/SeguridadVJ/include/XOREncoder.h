@@ -4,12 +4,18 @@
 class 
 XOREncoder {
 public:
+  /**
+  * @brief Constructor y Destructor por defecto
+  */
   XOREncoder() = default;
   ~XOREncoder() = default;
 
-  // Encodes the input string using XOR with the provided key.
-  // Input: The string to be encoded. -> Hola Mundo
-  // Key: The key to be used for encoding. -> clave
+  /**
+   * @brief Codifica un input de string usando XOR con una clave dada.
+   * @param input Texto por codificar. -> Hola Mundo
+   * @param key Clave que se utilizará para codificar. -> clave
+   * @return Returna el texto codificado.
+   */
   string
   encode(const std::string& input, const std::string& key) {
     string output = input;
@@ -20,7 +26,11 @@ public:
     return output;
   }
 
-  // Transform text to decimal(hex) representation
+  /**
+   * @brief Transforma una representación hexadecimal en un vector de bytes.
+   * @param input Cadena que contiene valores hexadecimales.
+   * @return Vector de bytes.
+   */
   vector<unsigned char>
   HexToBytes(const string& input) {
     vector<unsigned char> bytes;
@@ -40,6 +50,10 @@ public:
     return bytes;
   }
 
+  /**
+   * @brief Imprime una cadena como valores hexadecimales en consola.
+   * @param input Texto que se desea visualizar en formato hexadecimal.
+   */
   void
   printHex(const string& input) {
     for (unsigned char c : input) {
@@ -47,6 +61,11 @@ public:
     }
   }
 
+  /**
+   * @brief Verifica si el texto decodificado contiene solo caracteres validos.
+   * @param data Texto a evaluar.
+   * @return (Caracteres validos) ? true : false.
+   */
   bool 
   isValidText(const string& data) {
     return all_of(data.begin(), data.end(), [](unsigned char c) {
@@ -54,6 +73,10 @@ public:
       });
   }
 
+  /**
+   * @brief Aqatue de fuerza bruta sobre una clave de 1 byte.
+   * @param cifrado Texto codificado representado como un vector de bytes.
+   */
   void
   bruteForce_1Byte(const vector<unsigned char>& cifrado) {
     for (int clave = 0; clave < 256; clave++) {
@@ -72,6 +95,10 @@ public:
     }
   }
 
+  /**
+   * @brief Aqatue de fuerza bruta sobre claves de 2 byte.
+   * @param cifrado Texto codificado representado como un vector de bytes.
+   */
   void
   bruteForce_2Byte(const vector<unsigned char>& cifrado) {
     for (int b1 = 0; b1 < 256; b1++) {
@@ -94,6 +121,10 @@ public:
     }
   }
 
+  /**
+   * @brief Intenta descifrar el texto con BruteForce usando un diccionario de claves comunes.
+   * @param cifrado Texto codificado representado como un vector de bytes.
+   */
   void 
   bruteForceByDictionary(const vector<unsigned char>& cifrado) {
     vector<string> clavesComunes = {
@@ -115,6 +146,13 @@ public:
     }
   }
 
+  /**
+   * @brief Ataque de fuerza bruta utilizando archivos de texto con contraseñas conocidas.
+   * @param cifrado Texto codificado representado como un vector de bytes.
+   * @param mensajeOG Texto original esperado, si se encuentra una coincidencia se considera éxito.
+   * 
+   * Archivos obtenidos de https://github.com/danielmiessler/SecLists/tree/master/Passwords/Leaked-Databases
+   */
   void
   bruteForceByFile(const vector<unsigned char>& cifrado, const string& mensajeOG) {
     vector<string> fileNames = {
@@ -154,7 +192,6 @@ public:
       file.close();
     }
   }
-
 
 private:
 

@@ -4,9 +4,17 @@
 class
 AsciiBinary {
 public:
+  /**
+  * @brief Constructor y Destructor por defecto
+  */
   AsciiBinary() = default;
   ~AsciiBinary() = default;
 
+  /**
+   * @brief Convierte un carácter ASCII a su representación binaria de 8 bits.
+   * @param c Caracter a convertir.
+   * @return Cadena de 8 caracteres que representa cada valor binario.
+   */
   string 
   bitset(char c) {
     std::string result(8, '0');
@@ -20,6 +28,11 @@ public:
     return result;
   }
 
+  /**
+   * @brief Convierte una cadena de texto a su representación binaria.
+   * @param input Texto a convertir.
+   * @return Cadena con valores binarios separados donde cada caracter vale 8 bits.
+   */
   string 
   stringToBinary(const string input) {
     std::ostringstream oss;
@@ -29,6 +42,11 @@ public:
     return oss.str();
   }
 
+  /**
+   * @brief Convierte una cadena de 8 bits a su carácter ASCII equivalente.
+   * @param binary Cadena de 8 bits a convertir.
+   * @return Caracter correspondiente al valor binario ingresado.
+   */
   char 
   binaryToChar(const string& binary) {
     int value = 0;
@@ -39,6 +57,11 @@ public:
     return static_cast<char>(value);
   }
 
+  /**
+   * @brief Convierte una cadena completa de múltiples bloques de 8 bits a texto ASCII.
+   * @param binaryInput Cadena de binarios (ej.: "01001000 01101111 ...").
+   * @return Texto resultante de convertir cada bloque a su caracter correspondiente.
+   */
   string
   binaryToString(const string& binaryInput) {
     std::istringstream iss(binaryInput);

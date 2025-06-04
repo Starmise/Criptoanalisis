@@ -1,31 +1,14 @@
 #include "CaesarEncryption.h"
-#include "XOREncoder.h"
-#include "AsciiBinary.h"
+#include "Des.h"
 
 int
 main() {
-  string mensaje = "Sans e e e e e";
-  string clave = "jackinthebox69";
+  std::bitset<64> plaintext("0001001000110100010101100111100010011010101111001101111011110001");
+  std::bitset<64> key("0001001100110100010101110111100110011011101111001101111111110001");
 
-  XOREncoder XORencoder;
-
-  cout << "Mensaje original: " << mensaje << endl << "\n";
-
-  cout << endl;
-  string cifrado = XORencoder.encode(mensaje, clave);
-  vector<unsigned char> bytesCifrados(cifrado.begin(), cifrado.end());
-
-  XORencoder.bruteForceByFile(bytesCifrados, mensaje);
-
-
-  /*AsciiBinary AB;
-
-  string input = "Una vida para pintar";
-  string binary = AB.stringToBinary(input);
-  cout << "Texto a binario: " << binary << endl;
-
-  string message = AB.binaryToString(binary);
-  cout << "Binario a texto: " << message << endl;*/
+  DES des(key);
+  bitset<64> ciphertext = des.encode(plaintext);
+  cout << "Cifrado: " << ciphertext << endl;
 
   return 0;
 }
