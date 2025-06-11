@@ -15,7 +15,7 @@ public:
    * @param c Caracter a convertir.
    * @return Cadena de 8 caracteres que representa cada valor binario.
    */
-  string 
+  std::string
   bitset(char c) {
     std::string result(8, '0');
     int value = static_cast<unsigned char>(c);
@@ -33,8 +33,8 @@ public:
    * @param input Texto a convertir.
    * @return Cadena con valores binarios separados donde cada caracter vale 8 bits.
    */
-  string 
-  stringToBinary(const string input) {
+  std::string
+  stringToBinary(const std::string input) {
     std::ostringstream oss;
     for (char c : input) {
       oss << bitset(c) << " ";
@@ -48,7 +48,7 @@ public:
    * @return Caracter correspondiente al valor binario ingresado.
    */
   char 
-  binaryToChar(const string& binary) {
+  binaryToChar(const std::string& binary) {
     int value = 0;
     for (char bit : binary) {
       value = value * 2 + (bit - '0');
@@ -62,11 +62,11 @@ public:
    * @param binaryInput Cadena de binarios (ej.: "01001000 01101111 ...").
    * @return Texto resultante de convertir cada bloque a su caracter correspondiente.
    */
-  string
-  binaryToString(const string& binaryInput) {
+  std::string
+  binaryToString(const std::string& binaryInput) {
     std::istringstream iss(binaryInput);
-    string result;
-    string binary;
+    std::string result;
+    std::string binary;
 
     while (iss >> binary) {
       result += binaryToChar(binary);

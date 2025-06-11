@@ -197,9 +197,9 @@ public:
    * @param bits Bloque de 64 bits.
    * @return Cadena correspondiente.
    */
-  string 
+  std::string
   bitset64ToString(const std::bitset<64>& bits) {
-    string result(8, '\0');
+    std::string result(8, '\0');
     uint64_t val = bits.to_ullong();
 
     for (int i = 0; i < 8; i++) {
@@ -211,7 +211,7 @@ public:
 
 private:
   std::bitset<64> key;
-  vector<std::bitset<48>> subkeys;
+  std::vector<std::bitset<48>> subkeys;
 
   // Tabla de expansión simplificada (E)
   const int EXPANSION_TABLE[48] = {

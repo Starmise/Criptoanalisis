@@ -16,8 +16,8 @@ public:
    * @param desplazamiento Número de posiciones a desplazar cada letra.
    * @return Texto cifrado.
    */
-  string
-  EncryptionCaesar(const string& texto, int desplazamiento) {
+  std::string
+  EncryptionCaesar(const std::string& texto, int desplazamiento) {
     std::string result = "";
 
     for (char c : texto) {
@@ -43,8 +43,8 @@ public:
    * @param desplazamiento Desplazamiento usado originalmente para cifrar.
    * @return Texto descifrado.
    */
-  string
-  DecodeCaesar(const string& texto, int desplazamiento) {
+  std::string
+  DecodeCaesar(const std::string& texto, int desplazamiento) {
     return EncryptionCaesar(texto, 26 - (desplazamiento % 26));
   }
 
@@ -53,10 +53,10 @@ public:
    * @param texto Texto cifrado sobre el cual se va a aplicar fuerza bruta.
    */
   void
-  bruteForce(const string& texto) {
+  bruteForce(const std::string& texto) {
     for (int i = 0; i < 26; i++) {
-      string attempt = EncryptionCaesar(texto, 26 - i);
-      cout << "Inteto: " << i << ": " << attempt << endl;
+      std::string attempt = EncryptionCaesar(texto, 26 - i);
+      std::cout << "Inteto: " << i << ": " << attempt << std::endl;
     }
   }
 
