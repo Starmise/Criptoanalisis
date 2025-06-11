@@ -21,6 +21,9 @@ public:
   */
   ~DES() = default;
 
+  /**
+   * @brief Genera las 16 subclaves necesarias para el proceso de cifrado/descifrado.
+   */
   void 
   generateSubkeys() {
     for (int i = 0; i < 16; ++i) {
@@ -30,6 +33,11 @@ public:
     }
   }
 
+  /**
+   * @brief Realiza la permutación inicial sobre el bloque de entrada.
+   * @param input Bloque de 64 bits a permutar.
+   * @return Bloque permutado de 64 bits.
+   */
   std::bitset<64>
   iPermutation(const std::bitset<64>& input) {
     std::bitset<64> output;
@@ -39,6 +47,11 @@ public:
     return output;
   }
 
+  /**
+   * @brief Expande un bloque de 32 bits a 48 bits usando la tabla de expansión.
+   * @param halfBlock Bloque de 32 bits.
+   * @return Bloque expandido de 48 bits.
+   */
   std::bitset<48> 
   expand(const std::bitset<32>& halfBlock) {
     std::bitset<48> output;
@@ -50,6 +63,11 @@ public:
     return output;
   }
 
+  /**
+   * @brief Sustituye el bloque de 48 bits usando las S-Boxes.
+   * @param input Bloque de 48 bits.
+   * @return Resultado reducido a 32 bits.
+   */
   std::bitset<32>
   substitute(const  std::bitset<48>& input) {
     std::bitset<32> output;
@@ -68,6 +86,11 @@ public:
     return output;
   }
 
+  /**
+   * @brief Aplica la permutación P al bloque de 32 bits.
+   * @param input Bloque de 32 bits.
+   * @return Bloque permutado de 32 bits.
+   */
   std::bitset<32>
   permutedP(const  std::bitset<32>& input) {
     std::bitset<32> output;
@@ -79,6 +102,12 @@ public:
     return output;
   }
 
+  /**
+   * @brief Función Feistel que se aplica en cada ronda del algoritmo DES.
+   * @param right Mitad derecha del bloque.
+   * @param subkey Subclave correspondiente a la ronda.
+   * @return Resultado de aplicar Feistel (32 bits).
+   */
   std::bitset<32> 
   feistel(const std::bitset<32>& right, const std::bitset<48>& subkey) {
     auto expanded = expand(right);
@@ -88,6 +117,11 @@ public:
     return permuted;
   }
 
+  /**
+   * @brief Cifra un bloque de texto plano usando DES.
+   * @param plaintext Bloque de texto plano de 64 bits.
+   * @return Bloque cifrado de 64 bits.
+   */
   std::bitset<64>
   encode(const std::bitset<64>& plaintext) {
     auto data = iPermutation(plaintext);
@@ -105,6 +139,11 @@ public:
     return fPermutation(std::bitset<64>(combined));
   }
 
+  /**
+   * @brief Descifra un bloque de texto cifrado usando DES.
+   * @param plaintext Bloque cifrado de 64 bits.
+   * @return Bloque descifrado de 64 bits.
+   */
   std::bitset<64>
   decode(const std::bitset<64>& plaintext) {
     auto data = iPermutation(plaintext);
@@ -122,6 +161,11 @@ public:
     return fPermutation(std::bitset<64>(combined));
   }
 
+  /**
+   * @brief Realiza la permutación final (inversa a la inicial).
+   * @param input Bloque de 64 bits.
+   * @return Bloque permutado final de 64 bits.
+   */
   std::bitset<64>
   fPermutation(const std::bitset<64>& input) {
     // Lo mismo que iPermutation, pero se pone por fines prácticos
@@ -132,6 +176,11 @@ public:
     return output;
   }
   
+  /**
+   * @brief Convierte una cadena de 8 caracteres a un std::bitset<64>.
+   * @param block Cadena de texto (8 caracteres).
+   * @return Representación binaria de 64 bits.
+   */
   std::bitset<64> 
   stringToBitset64(const std::string& block) {
     uint64_t bits = 0;
@@ -143,7 +192,12 @@ public:
     return std::bitset<64>(bits);
   }
 
-  std::string 
+  /**
+   * @brief Convierte un std::bitset<64> a una cadena de 8 caracteres.
+   * @param bits Bloque de 64 bits.
+   * @return Cadena correspondiente.
+   */
+  string 
   bitset64ToString(const std::bitset<64>& bits) {
     string result(8, '\0');
     uint64_t val = bits.to_ullong();
