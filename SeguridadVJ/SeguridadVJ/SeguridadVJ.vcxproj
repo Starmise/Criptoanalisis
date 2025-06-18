@@ -135,6 +135,7 @@
     <ClInclude Include="include\CaesarEncryption.h" />
     <ClInclude Include="include\Des.h" />
     <ClInclude Include="include\Prerequisites.h" />
+    <ClInclude Include="include\Vignere.h" />
     <ClInclude Include="include\XOREncoder.h" />
   </ItemGroup>
   <ItemGroup>
