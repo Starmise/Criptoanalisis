@@ -1,5 +1,6 @@
 #pragma once
 #include "Prerequisites.h"
+#include "XOREncoder.h"
 
 class
 Vignere {
@@ -71,6 +72,45 @@ public:
       }
     }
     return result; // Return the encoded string
+  }
+
+  std::string
+  breakBruteForce(const std::string& text) {
+    std::vector<std::string> fileNames = {
+        "bin/adobe100.txt",
+        "bin/bible.txt",
+        "bin/elitehacker.txt",
+        "bin/fortinet-2021_passwords.txt",
+        "bin/Lizard-Squad.txt"
+    };
+
+    for (size_t i = 0; i < fileNames.size(); i++) {
+      std::ifstream file(fileNames[i]);
+      if (!file.is_open()) {
+        std::cerr << "No se pudo abrir el archivo: " << fileNames[i] << std::endl;
+        continue;
+      }
+
+      while (std::getline(file, key)) {
+        if (key.empty()) {
+          continue;
+        }
+
+        std::string normKey = normalizeKey(text);
+        std::string result = decode(text);
+
+        XOREncoder xorE;
+
+        if (xorE.isValidText(text)) {
+          std::cout << "============================\n";
+          std::cout << "Archivo: " << fileNames[i] << std::endl;
+          std::cout << "Clave: " << key << std::endl;
+          std::cout << "Texto posible: " << result << std::endl;
+          return result;
+        }
+      }
+      file.close();
+    }
   }
 
 private:
