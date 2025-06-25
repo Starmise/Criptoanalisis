@@ -9,5 +9,6 @@
 #include <algorithm>
 #include <bitset>
 #include <functional>
+#include <random>
 
 #include <fstream> //Para leer los txt

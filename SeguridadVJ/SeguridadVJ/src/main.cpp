@@ -1,22 +1,14 @@
-#include "Vignere.h"
+#include "CrytoGenerator.h"
 
 int
 main() {
-  std::string text = "For Those Who Come After";
-  std::string key = "Devida";
+  // 1) Initialize the random number generator
+  CryptoGenerator cryptoGen;
+  cryptoGen.generatePassword(16); // Generate a password of length 16
 
-  std::cout << "Texto original: " << text << std::endl;
-  std::cout << "Clave: " << key << std::endl;
-
-  Vignere vignere(key);
-  std::string encrypted = vignere.encode(text);
-  std::cout << "Texto cifrado: " << encrypted << std::endl;
-
- /* std::string decrypted = vignere.decode(encrypted);
-  std::cout << "Texto descifrado: " << decrypted << std::endl;*/
-
-  std::string brute = vignere.breakEncode(encrypted, 5);
-  std::cout << "Texto descifrado: " << brute << std::endl;
+  // 2) Genereate 16 generic random bytes
+  auto randomBytes = cryptoGen.generateBytes(16);
+  //std::cout << "Random Bytes (hex): " <<< cryptoGen.toHex(randomBytes) << std::endl;
 
   return 0;
 }
