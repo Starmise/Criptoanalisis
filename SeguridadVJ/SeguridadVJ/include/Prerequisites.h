@@ -8,5 +8,6 @@
 #include <cctype>
 #include <algorithm>
 #include <bitset>
+#include <functional>
 
 #include <fstream> //Para leer los txt

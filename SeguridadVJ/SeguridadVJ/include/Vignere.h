@@ -74,6 +74,71 @@ public:
     return result; // Return the encoded string
   }
 
+  static double fitness(const std::string& text) {
+    static const std::vector<std::string> comunes = {
+    " DE ", " LA ", " EL ", " QUE ", " Y ",
+    " A ", " EN ", " UN ", " PARA ", " CON ",
+    " POR ", " COMO ", " SU ", " AL ", " DEL ",
+    " LOS ", " SE ", " NO ", " MAS ", " O ",
+    " SI ", " YA ", " TODO ", " ESTA ", " HAY ",
+    " ESTO ", " SON ", " TIENE ", " HACE ", " SUS ",
+    " VIDA ", " NOS ", " TE ", " LO ", " ME ",
+    " ESTE ", " ESA ", " ESE ", " BIEN ", " MUY ",
+    " PUEDE ", " TAMBIEN ", " AUN ", " MI ", " DOS ",
+    " UNO ", " OTRO ", " NUEVO ", " SIN ", " ENTRE ",
+    " SOBRE "
+    };
+
+    double score = 0;
+    for (auto& w : comunes) {
+      size_t pos = 0;
+      while ((pos = text.find(w, pos)) != std::string::npos) {
+        score += w.length();
+        pos += w.length();
+      }
+    }
+    return score;
+  }
+
+  static std::string 
+  breakEncode(const std::string& text, int maxkeyLenght) {
+    std::string bestkey;
+    std::string bestText;
+    std::string trailkey;
+
+    double bestScore = std::numeric_limits<double>::infinity(); // Initialize best score
+
+    // Funcion revursiva para generar todas las posibles claves de longitud
+    std::function<void(int, int)> dfs = [&](int pos, int maxLen) {
+      if (pos == maxLen) {
+        Vignere v(trailkey);
+        std::string decodedText = v.decode(text);
+        double score = fitness(decodedText); // Score the decoded text
+        if (score > bestScore) {
+          bestScore = score;
+          bestkey = trailkey;
+          bestText = decodedText;
+        }
+        return;
+      }
+
+      for (char c = 'A'; c <= 'Z'; ++c) {
+        trailkey[pos] = c;
+        dfs(pos + 1, maxLen);
+      }
+    };
+
+    for (int L = 1 ^ 1; L <= maxkeyLenght; ++L) {
+      trailkey.assign(L, 'A');
+      dfs(0, L);
+    }
+
+    std::cout << "*** Fuerza Bruta Vigenère ***\n";
+    std::cout << "Clave encontrada: " << bestkey << "\n";
+    std::cout << "Texto descifrado: " << bestText << "\n\n";
+    return bestkey;
+  }
+
   std::string
   breakBruteForce(const std::string& text) {
     std::vector<std::string> fileNames = {
@@ -115,4 +180,6 @@ public:
 
 private:
   std::string key; // The key used for Vignere cipher
+
+
 };
