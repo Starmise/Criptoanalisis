@@ -195,6 +195,155 @@ public:
     return b64; // Returns the Base64 string generated.
   }
 
+  /*
+  * @brief Decode a standar Base64 string in bytes.
+  * @param b64 String Base64
+  * @return std::vector<uint8_t> Decoded bytes
+  * @throws std::runtime_error If the string isn't a valid Base64
+  */
+  std::vector<uint8_t>
+    fromBase64(const std::string& b64) {
+    std::lock_guard<std::mutex> lock(_mtx);
+    std::vector<uint8_t> out;
+    size_t len = b64.size();
+    size_t pad = 0;
+
+    if (len >= 1 && b64[len - 1] == '=') pad++;
+    if (len >= 2 && b64[len - 2] == '=') pad++;
+    out.reserve(((len / 4) * 3) - pad);
+
+    unsigned int i = 0;
+    while (i < len) {
+      uint32_t block = 0;
+      unsigned int chars = 0;
+      for (unsigned int j = 0; j < 4 && i < len; ++j, ++i) {
+        uint8_t v = _decTable[(unsigned char)b64[i]];
+        if (v == 0xFF) { j--; continue; }
+        block = (block << 6) | v; // Shifts the block and adds the value of the character
+        ++chars;
+      }
+      for (unsigned int k = 0; k < chars - 1; ++k) {
+        out.push_back((block >> (8 * (chars - 2 - k))) & 0xff);
+      }
+    }
+    return out;
+  }
+
+  /*
+  * @brief Clean in a safe form the sensible data of the vector.
+  * Overrides each byte with zero to avoid memory leaks.
+  * @param data Vector which elements will be cleaned.
+  */
+  void
+    secureWipe(std::vector<uint8_t>& data) {
+    std::fill(data.begin(), data.end(), 0);
+  }
+
+  /*
+  * @brief Validates if a password complies with minimum policies.
+  * Requires at least one uppercase, one lowercase and one number.
+  * @param password Password to validate
+  * @return true if it complies the policy, false if not.
+  */
+  bool
+    validatePassword(const std::string& password) {
+    if (password.size() < 8) return false;
+
+    bool hasUpper = false, hasLower = false, hasDigit = false, hasSymbols = false;
+
+    for (char c : password) {
+      if (std::isupper((unsigned char)c)) {
+        hasUpper = true;
+      }
+      else if (std::islower((unsigned char)c)) {
+        hasLower = true;
+      }
+      else if (std::isdigit((unsigned char)c)) {
+        hasDigit = true;
+      }
+      else if (std::ispunct((unsigned char)c)) {
+        hasSymbols = true;
+      }
+    }
+    return hasUpper && hasLower && hasDigit && hasSymbols;
+  }
+
+  /*
+  * @brief Estimates the approximate password entropy in bits,
+  * based on the size of the character pool used and the length.
+  * @param password Password to evaluate
+  * @return Estimated entropy bits
+  */
+  double
+    estimateEntropy(const std::string& password) {
+    if (password.size() < 8) return 0.0;
+
+    bool hasUpper = false, hasLower = false, hasDigit = false, hasSymbols = false;
+    for (char c : password) {
+      if (std::isupper((unsigned char)c)) {
+        hasUpper = true;
+      }
+      else if (std::islower((unsigned char)c)) {
+        hasLower = true;
+      }
+      else if (std::isdigit((unsigned char)c)) {
+        hasDigit = true;
+      }
+      else if (std::ispunct((unsigned char)c)) {
+        hasSymbols = true;
+      }
+    }
+
+    unsigned int poolSize = 0;
+    if (hasLower) {
+      poolSize += 26; // 26 lowercase letters.
+    }
+    if (hasUpper) {
+      poolSize += 26; // 26 uppercase letters.
+    }
+    if (hasDigit) {
+      poolSize += 10; // 10 digits (0-9).
+    }
+    if (hasSymbols) {
+      poolSize += 32; // Approximately 32 common symbols
+    }
+    if (poolSize == 0) {
+      std::cout << "No character types enabled for entropy estimation." << std::endl;
+      return 0.0; // If there are no valid characters, entropy is 0.
+    }
+
+    double entropy = std::log2(static_cast<double>(poolSize)) * password.size(); // Entropy = log2(poolSize) * lenght.
+    return entropy;
+  }
+
+  /*
+  * @brief Estimates the approximate password entropy in bits,
+  * based on the size of the character pool used and the length.
+  * @param password Password to evaluate
+  * @return Estimated entropy bits
+  */
+  std::string
+    passwordStrength(const std::string& password) {
+    double entropy = estimateEntropy(password);
+    if (entropy < 28) {
+      return "Very weak"; // Entropy < 28 bits.
+    }
+    else if (entropy < 40) {
+      return "Weak"; // Entropy between 28 and 40 bits.
+    }
+    else if (entropy < 60) {
+      return "Moderate"; // Entropy between 48 and 68 bits.
+    }
+    else if (entropy < 80) {
+      return "Strong"; // Entropy between 60 and 88 bits.
+    }
+    else {
+      return "Very strong"; // Entropy >= 80 bits.
+    }
+  }
+
 private:
   std::mt19937 m_engine; ///< Mersenne Twister random number generation engine.
+  std::mutex _mtx;
+  std::array<uint8_t, 256>_decTable;
 };

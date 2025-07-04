@@ -10,5 +10,7 @@
 #include <bitset>
 #include <functional>
 #include <random>
+#include <mutex>
+#include <array>
 
 #include <fstream> //Para leer los txt
