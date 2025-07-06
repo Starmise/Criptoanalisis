@@ -342,6 +342,58 @@ public:
     }
   }
 
+  /*
+  * @brief Method that generates a given number of passwords and
+  * returns only the passwords with the highest possible entropy.
+  * @param count
+  * @param length Length of the password to generate.
+  * @param useUpper Include uppercase letters [A-Z].
+  * @param useLower Include lowercase letters [a-z].
+  * @param useDigits Include digits [0-9].
+  * @param useSymbols Include special symbols.
+  * @return std::vector<std::string> Best 3 passwords with the highest entriopy.
+  */
+  std::vector<std::string>
+    Best3ByEntropy(unsigned int count,
+      unsigned int lenght = 16,
+      bool useUpper = true,
+      bool useLower = true,
+      bool useDigits = true,
+      bool useSymbols = false) {
+    if (count < 3) {
+      throw std::invalid_argument("It is needed at least 3 passwords to be generated");
+    }
+
+    std::vector<std::string> generatedPasswords;
+    std::vector<double> entropies;
+
+    for (unsigned int i = 0; i < count; i++) {
+      std::string paswordd = generatePassword(lenght, useUpper, useLower, useDigits, useSymbols);
+      double aproxEntropy = estimateEntropy(paswordd);
+      generatedPasswords.push_back(paswordd);
+      entropies.push_back(aproxEntropy);
+    }
+
+    std::vector<std::string> top3pass;
+    for (int i = 0; i < 3; i++) {
+      double maxEntropy = 0.0;
+      int maxIndex = -1;
+
+      for (unsigned int j = 0; j < entropies.size(); ++j) {
+        if (entropies[j] > maxEntropy) {
+          maxEntropy = entropies[j];
+          maxIndex = j;
+        }
+      }
+
+      if (maxIndex != -1) {
+        top3pass.push_back(generatedPasswords[maxIndex]);
+        entropies[maxIndex] = -1.0;
+      }
+    }
+    return top3pass;
+  }
+
 private:
   std::mt19937 m_engine; ///< Mersenne Twister random number generation engine.
   std::mutex _mtx;
