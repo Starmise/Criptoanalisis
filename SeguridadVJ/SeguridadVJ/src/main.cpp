@@ -41,5 +41,9 @@ main() {
   std::cout << "Password 2: " << "K0r0%Maru_Band&" << "\n";
   std::cout << "Estimated Entropy 2: " << entropy2 << "\n";
 
+  // 9) Best 3 passwords
+  std::cout << "\n";
+  auto best3 = cryptoGen.Best3ByEntropy(10);
+
   return 0;
 }
