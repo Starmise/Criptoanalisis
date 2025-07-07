@@ -367,7 +367,20 @@ public:
     std::vector<std::string> generatedPasswords;
     std::vector<double> entropies;
 
+    // Produces a random integer values i, uniformly distributed on the closed interval [a, b].
+    std::uniform_int_distribution<int> boolDist(0, 1);
+
     for (unsigned int i = 0; i < count; i++) {
+      // Random params for each configuration of the password.
+      bool useUpper = boolDist(m_engine);
+      bool useLower = boolDist(m_engine);
+      bool useDigits = boolDist(m_engine);
+      bool useSymbols = boolDist(m_engine);
+
+      if (!useUpper && !useLower && !useDigits && !useSymbols) {
+        useLower = true; // If nothing is true, then lower-case will be true.
+      }
+
       std::string paswordd = generatePassword(lenght, useUpper, useLower, useDigits, useSymbols);
       double aproxEntropy = estimateEntropy(paswordd);
       generatedPasswords.push_back(paswordd);
@@ -388,6 +401,11 @@ public:
 
       if (maxIndex != -1) {
         top3pass.push_back(generatedPasswords[maxIndex]);
+
+        std::cout << "Best Password " << (i+1) <<  ": " << generatedPasswords[maxIndex] << std::endl;
+        std::cout << "Entropy: " << entropies[maxIndex] << std::endl;
+        std::cout << "\n";
+        
         entropies[maxIndex] = -1.0;
       }
     }
