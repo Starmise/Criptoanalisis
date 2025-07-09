@@ -6,7 +6,7 @@
 * @brief Generates cryptographically secure passwords, keys, IVs and salts, and provides encryption (hex/Base64) and memory cleaning utilities.
 */
 class
-  CryptoGenerator {
+CryptoGenerator {
 public:
   /**
   * @class Class constructor
@@ -31,11 +31,11 @@ public:
   * @throws std::runtime_error If no character type is enabled.
   */
   std::string
-    generatePassword(unsigned int length,
-      bool useUpper = true,
-      bool useLower = true,
-      bool useDigits = true,
-      bool useSymbols = false) {
+  generatePassword(unsigned int length,
+                    bool useUpper = true,
+                    bool useLower = true,
+                    bool useDigits = true,
+                    bool useSymbols = false) {
     const std::string uppers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const std::string lowers = "abcdefghijklmnopqrstuvwxyz";
     const std::string digits = "0123456789";
@@ -68,7 +68,7 @@ public:
   * @return std::vector<uint8_t> Vector with values in [0x00-0xFF].
   */
   std::vector<uint8_t>
-    generateBytes(unsigned int numBytes) {
+  generateBytes(unsigned int numBytes) {
     std::vector<uint8_t> bytes(numBytes);
     std::uniform_int_distribution<int> dist(0, 255); // Uniform distribution of the range [0x00-0xFF]. 
 
@@ -82,7 +82,7 @@ public:
   * @brief Converts bytes to a hexadecimal chain
   */
   std::string
-    toHex(const std::vector<uint8_t>& data) {
+  toHex(const std::vector<uint8_t>& data) {
 
     std::ostringstream oss;
     for (const auto& byte : data) {
@@ -95,7 +95,7 @@ public:
   * @brief Decodes an hexadecimal chain to bytes
   */
   std::vector<uint8_t>
-    fromHex(const std::string& hex) {
+  fromHex(const std::string& hex) {
     if (hex.size() % 2 != 0) {
       throw std::runtime_error("Hex inválido (longitud impar).");
     }
@@ -116,7 +116,7 @@ public:
   * @throws std::runtime_error If bits isnt a multiple of 8.
   */
   std::vector<uint8_t>
-    generateKey(unsigned int bits) {
+  generateKey(unsigned int bits) {
     if (bits % 8 != 0) {
       throw std::runtime_error("Bits debe ser múltiplo de 8.");
     }
@@ -132,7 +132,7 @@ public:
     * @return std::vector<uint8_t> IV generated.
     */
   std::vector<uint8_t>
-    generateIV(unsigned int blockSize) {
+  generateIV(unsigned int blockSize) {
     return generateBytes(blockSize);
   }
 
@@ -147,7 +147,7 @@ public:
   * @return std::vector<uint8_t> Generated Salt.
   */
   std::vector<uint8_t>
-    generateSalt(unsigned int length) {
+  generateSalt(unsigned int length) {
     return generateBytes(length);
   }
 
@@ -157,7 +157,7 @@ public:
   * @return std::string Base64 representation (with padding ‘=’ if applicable)
   */
   std::string
-    toBase64(const std::vector<uint8_t>& data) {
+  toBase64(const std::vector<uint8_t>& data) {
     static const char* table =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
       "abcdefghijklmnopqrstuvwxyz"
@@ -202,7 +202,7 @@ public:
   * @throws std::runtime_error If the string isn't a valid Base64
   */
   std::vector<uint8_t>
-    fromBase64(const std::string& b64) {
+  fromBase64(const std::string& b64) {
     std::lock_guard<std::mutex> lock(_mtx);
     std::vector<uint8_t> out;
     size_t len = b64.size();
@@ -235,7 +235,7 @@ public:
   * @param data Vector which elements will be cleaned.
   */
   void
-    secureWipe(std::vector<uint8_t>& data) {
+  secureWipe(std::vector<uint8_t>& data) {
     std::fill(data.begin(), data.end(), 0);
   }
 
@@ -246,7 +246,7 @@ public:
   * @return true if it complies the policy, false if not.
   */
   bool
-    validatePassword(const std::string& password) {
+  validatePassword(const std::string& password) {
     if (password.size() < 8) return false;
 
     bool hasUpper = false, hasLower = false, hasDigit = false, hasSymbols = false;
@@ -275,7 +275,7 @@ public:
   * @return Estimated entropy bits
   */
   double
-    estimateEntropy(const std::string& password) {
+  estimateEntropy(const std::string& password) {
     if (password.size() < 8) return 0.0;
 
     bool hasUpper = false, hasLower = false, hasDigit = false, hasSymbols = false;
@@ -323,7 +323,7 @@ public:
   * @return Estimated entropy bits
   */
   std::string
-    passwordStrength(const std::string& password) {
+  passwordStrength(const std::string& password) {
     double entropy = estimateEntropy(password);
     if (entropy < 28) {
       return "Very weak"; // Entropy < 28 bits.
@@ -354,7 +354,7 @@ public:
   * @return std::vector<std::string> Best 3 passwords with the highest entriopy.
   */
   std::vector<std::string>
-    Best3ByEntropy(unsigned int count,
+  Best3ByEntropy(unsigned int count,
       unsigned int lenght = 16,
       bool useUpper = true,
       bool useLower = true,
