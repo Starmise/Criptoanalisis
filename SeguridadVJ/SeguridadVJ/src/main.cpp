@@ -3,25 +3,39 @@
 
 int
 main() {
-  // 1) Initialize the random number generator
-  CryptoGenerator cryptoGen;
-  cryptoGen.generatePassword(16); // Generate a password of length 16
-
-  // 2) Best 3 passwords
-  std::cout << "\n";
-  auto best3 = cryptoGen.Best3ByEntropy(10);
-
-  std::cout << "----------------------------------------------------------------" << "\n";
-
   SensitiveInfoCypher sensReader;
+  std::string stringKey = "K0r0_7357_C14v3";
+  std::string inputFile = "bin/SensInfo.txt";
 
-  if (sensReader.LoadFile("bin/SensInfo.txt")) {
-    std::cout << "Data loaded succesfully" << std::endl;
-    sensReader.printData(sensReader.getData());
+  if (!sensReader.LoadFile(inputFile)) {
+    return 0;
   }
-  else {
-    std::cerr << "Failed while loading the file" << std::endl;
-  }
+  std::cout << "Data loaded succesfully" << std::endl;
+  sensReader.printData();
+
+  // VIGENERE
+  Vignere vig(stringKey);
+  sensReader.encodeByVigenere(vig, "bin/vigenere_encrypted.txt");
+  sensReader.decodeByVigenere(vig, "bin/vigenere_encrypted.txt", "bin/vigenere_decoded.txt");
+
+  // DES
+  std::bitset<64> key("0001001100110100010101110111100110011011101111001101111111110001");
+  DES des(key);
+  sensReader.encodeByDES(des, "bin/des_encrypted.txt");
+  sensReader.decodeByDES(des, "bin/des_encrypted.txt", "bin/des_decoded.txt", key);
+
+  // XOR
+  sensReader.encodeByXOR(inputFile, "bin/xor_encrypted.txt", stringKey);
+  sensReader.decodeByXOR("bin/xor_encrypted.txt", "bin/xor_decoded.txt", stringKey);
+
+  // Ascii Binary
+  sensReader.encodeByBinary(inputFile, "bin/binary_encrypted.txt");
+  sensReader.decodeByBinary("bin/binary_encrypted.txt", "bin/binary_decoded.txt");
+
+  // Caesar
+  int shift = 4;
+  sensReader.encodeByCaesar(inputFile, "bin/Caesar_encrypted.txt", shift);
+  sensReader.decodeByCaesar("bin/Caesar_encrypted.txt", "bin/Caesar_decoded.txt", shift);
 
   return 0;
 }

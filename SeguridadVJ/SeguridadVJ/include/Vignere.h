@@ -62,7 +62,7 @@ public:
 
         // Desplazamiento de la key
         int shift = key[i % key.size()] - 'A'; // Calculate shift based on key character mod26
-        // Encode
+        // Decode
         char decodedChar = static_cast<char>(((c - base) - shift + 26) % 26 + base);
         result += decodedChar; // Append encoded character to result
         i++; // Increment key index
