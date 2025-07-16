@@ -13,7 +13,6 @@ main() {
     return 0;
   }
   std::cout << "Data loaded succesfully" << std::endl;
-  sensReader.printData();
 
   // VIGENERE
   Vignere vig(stringKey);
