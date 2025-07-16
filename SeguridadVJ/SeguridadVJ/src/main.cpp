@@ -7,7 +7,7 @@ main() {
 
   SensitiveInfoCypher sensReader;
   std::string stringKey = "K0r0_7357_C14v3";
-  std::string inputFile = "bin/SensInfo.txt";
+  std::string inputFile = "bin/CIFData.txt";
 
   if (!sensReader.LoadFile(inputFile)) {
     return 0;

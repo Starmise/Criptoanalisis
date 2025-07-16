@@ -8,7 +8,7 @@
 #include "StarmiseCipher.h"
 
 class
-  SensitiveInfoCypher {
+SensitiveInfoCypher {
 public:
   /*
   * @brief Default constructor and destructor.
