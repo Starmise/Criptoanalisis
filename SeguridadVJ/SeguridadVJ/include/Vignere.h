@@ -5,14 +5,25 @@
 class
 Vignere {
 public:
+  /*
+  * @brief Default constructor.
+  */
   Vignere() = default;
 
+  /*
+  * @brief Constructs a Vignere object with a given key.
+  * @param key The encryption key (will be normalized).
+  */
   Vignere(const std::string& key) : key(normalizeKey(key)) {
     if (key.empty()) {
       throw std::invalid_argument("No hay una llave con letras o puede estar vacia");
     }
   }
 
+  /*
+  * @brief Normalizes a raw key by removing non-alphabetic characters and onverting to uppercase.
+  * @param rawKey The raw key string to normalize.
+  */
   static std::string
   normalizeKey(const std::string& rawKey) {
     std::string k;
@@ -24,7 +35,11 @@ public:
     return k;
   }
 
-  std::string 
+  /*
+  * @brief Encodes a given plaintext using the Vigenère cipher.
+  * @param text The plaintext to encode.
+  */
+  std::string
   encode(const std::string& text) {
     std::string result;
     result.reserve(text.size()); // Reserve space for efficiency
@@ -49,7 +64,11 @@ public:
     return result; // Return the encoded string
   }
 
-  std::string 
+  /*
+  * @brief Decodes a given ciphertext using the Vigenère cipher.
+  * @param text The ciphertext to decode.
+  */
+  std::string
   decode(const std::string& text) {
     std::string result;
     result.reserve(text.size()); // Reserve space for efficiency
@@ -74,7 +93,12 @@ public:
     return result; // Return the encoded string
   }
 
-  static double fitness(const std::string& text) {
+  /*
+  * @brief Computes a fitness score of a text based on the frequency of common Spanish words.
+  * @param text The text to evaluate.
+  */
+  static double 
+  fitness(const std::string& text) {
     static const std::vector<std::string> comunes = {
     " DE ", " LA ", " EL ", " QUE ", " Y ",
     " A ", " EN ", " UN ", " PARA ", " CON ",
@@ -100,7 +124,12 @@ public:
     return score;
   }
 
-  static std::string 
+  /*
+  * @brief Attempts to break a Vigenère-encoded text using brute-force for a maximum key length.
+  * @param text The encoded text.
+  * @param maxkeyLenght Maximum length of the key to try.
+  */
+  static std::string
   breakEncode(const std::string& text, int maxkeyLenght) {
     std::string bestkey;
     std::string bestText;
@@ -139,6 +168,10 @@ public:
     return bestkey;
   }
 
+  /*
+  * @brief Attempts to decrypt text using a dictionary-based brute-force attack.
+  * @param text The encoded text to break.
+  */
   std::string
   breakBruteForce(const std::string& text) {
     std::vector<std::string> fileNames = {
