@@ -5,6 +5,7 @@
 #include "XorEncoder.h"
 #include "AsciiBinary.h"
 #include "CaesarEncryption.h"
+#include "StarmiseCipher.h"
 
 class
   SensitiveInfoCypher {
@@ -98,8 +99,8 @@ public:
   */
   void
   decodeByXOR(const std::string& inputFile, 
-                const std::string& outputFile, 
-                const std::string& key);
+              const std::string& outputFile, 
+              const std::string& key);
 
   /*
  * @brief Encrypts the data using the Ascii Binary method.
@@ -134,6 +135,18 @@ public:
   */
   void
   decodeByCaesar(const std::string& inputFile, const std::string& outputFile, int shift);
+
+  void
+  encodeByStarmise(const std::string& inputfile, 
+                  const std::string& outputfile,
+                  const std::string& key, 
+                  unsigned int seed);
+
+  void
+  decodeByStarmise(const std::string& inputfile, 
+                  const std::string& outputfile, 
+                  const std::string& key, 
+                  int seed);
 
 private:
   std::vector<SensitiveData> data;

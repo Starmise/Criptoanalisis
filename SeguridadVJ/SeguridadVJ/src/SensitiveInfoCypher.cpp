@@ -309,3 +309,79 @@ SensitiveInfoCypher::decodeByCaesar(const std::string& inputFile,
   in.close();
   out.close();
 }
+
+void 
+SensitiveInfoCypher::encodeByStarmise(const std::string& inputfile, 
+                                      const std::string& outputfile, 
+                                      const std::string& key, 
+                                      unsigned int seed) {
+  std::ifstream in(inputfile);
+  std::ofstream out(outputfile);
+
+  if (!in.is_open() || !out.is_open()) {
+    std::cerr << "Cannot open file for encoding 'Starmise'\n";
+    return;
+  }
+
+  std::ostringstream oss;
+  std::string line;
+  while (std::getline(in, line)) {
+    oss << line << '\n';
+  }
+
+  StarmiseCypher starmise;
+  std::string fullText = oss.str();
+  std::string encrypted = starmise.encrypt(fullText, key, seed);
+
+  // Hexadecimal
+  for (unsigned char c : encrypted) {
+    out << std::hex << std::setw(2) << std::setfill('0') << (int)c << " ";
+  }
+  out << "\n-----------------\n";
+
+  in.close();
+  out.close();
+}
+
+void 
+SensitiveInfoCypher::decodeByStarmise(const std::string& inputfile, 
+                                      const std::string& outputfile, 
+                                      const std::string& key, 
+                                      int seed) {
+  std::ifstream in(inputfile);
+  std::ofstream out(outputfile);
+
+  if (!in.is_open() || !out.is_open()) {
+    std::cerr << "Cannot open file for decoding 'Starmise'\n";
+    return;
+  }
+
+  StarmiseCypher starmise;
+  starmise.encrypt("koro", key, seed); // Wave Function
+
+  std::string line;
+  std::string block;
+
+  std::vector<unsigned char> buffer;
+  std::string hex;
+  while (in >> hex) {
+    if (hex == "-----------------") {
+      // Decodificamos el bloque acumulado
+      std::string encrypted(buffer.begin(), buffer.end());
+      StarmiseCypher starmise;
+      std::string decrypted = starmise.decrypt(encrypted, key, seed);
+      out << decrypted;
+      buffer.clear();
+    }
+    else {
+      unsigned int byte;
+      std::stringstream ss;
+      ss << std::hex << hex;
+      ss >> byte;
+      buffer.push_back(static_cast<unsigned char>(byte));
+    }
+  }
+
+  in.close();
+  out.close();
+}
