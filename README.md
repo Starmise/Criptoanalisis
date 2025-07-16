@@ -26,6 +26,13 @@ It has a custom encryption method called **Starmise Cipher**, combining a classi
 
 ---
 
+## How to use
+1. Create a file .txt format with the sensitive information you want to encrypt.
+2. Add your .txt file to the bin folder
+3. Inside main.cpp, on line 10, replace the file name with the name of your own file.
+4. Run program.
+5. That's it! You will have your file encrypted by 6 different methods: Caesar, XOR, DES, Binary, Vignere and Starmise (custom).
+
 ## How Starmise Cipher Works
 
 ### 1. XOR Cipher
