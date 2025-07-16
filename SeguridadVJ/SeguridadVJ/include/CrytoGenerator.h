@@ -18,6 +18,9 @@ public:
     m_engine.seed(rd()); // Seed of the Mersenne Twister engine with the entropy of the device.
   }
 
+  /*
+  * @brief Default destructor
+  */
   ~CryptoGenerator() = default;
 
   /**More actions
@@ -317,10 +320,10 @@ public:
   }
 
   /*
-  * @brief Estimates the approximate password entropy in bits,
-  * based on the size of the character pool used and the length.
+  * @brief Estimates the approximate password entropy in levels,
+  * based on the entropy calculated with estimateEntropy.
   * @param password Password to evaluate
-  * @return Estimated entropy bits
+  * @return Estimated entropy strenght level.
   */
   std::string
   passwordStrength(const std::string& password) {

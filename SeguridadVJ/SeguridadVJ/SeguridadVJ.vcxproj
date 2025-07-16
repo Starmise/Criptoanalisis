@@ -141,11 +141,13 @@
     <ClInclude Include="include\Des.h" />
     <ClInclude Include="include\Prerequisites.h" />
     <ClInclude Include="include\SensitiveInfoCypher.h" />
+    <ClInclude Include="include\StarmiseCipher.h" />
     <ClInclude Include="include\Vignere.h" />
     <ClInclude Include="include\XOREncoder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\SensitiveInfoCypher.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,7 +21,5 @@
 */
 struct
 SensitiveData {
-  std::string user;
-  std::string password;
-  std::string others;
+  std::vector<std::string> lines;
 };
